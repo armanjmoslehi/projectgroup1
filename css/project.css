@@ -46,3 +46,69 @@ body {
   #main-web{
     text-align: center;
   }
+
+  body {
+
+    margin: 0;
+
+    font-family: Arial, sans-serif;
+
+}
+
+ 
+
+.map-container {
+
+    position: relative;
+
+    width: 100%;
+
+    max-width: 800px; /* Adjust as per your map's size */
+
+    margin: auto;
+
+    border: 1px solid #ccc;
+
+}
+
+ 
+
+.map-image {
+
+    display: block;
+
+    width: 100%;
+
+    height: auto;
+
+}
+
+ 
+
+.draggable-text {
+
+    position: absolute;
+
+    top: 20%; /* Initial position */
+
+    left: 30%;
+
+    padding: 10px;
+
+    background-color: #007BFF;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 5px;
+
+    cursor: grab;
+
+    z-index: 10;
+
+    user-select: none;
+
+    font-size: 14px;
+
+}
