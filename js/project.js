@@ -1,5 +1,6 @@
 
 
+
 // BELOW FOR WELCOME PAGE
 
 document.getElementById('myClick');
@@ -29,3 +30,5 @@ okButton.onclick = function() {
   mainContent.style.display = 'block'; // Show the main content
 
 }
+
+
