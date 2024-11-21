@@ -18,45 +18,50 @@ okButton.onclick = function() {
   mainContent.style.display = 'block'; // Show the main content
 };
 
-// script.js
-const draggable = document.getElementById('draggable');
 
-// Variables to store position
-let offsetX = 0;
-let offsetY = 0;
-let isDragging = false;
+document.addEventListener("DOMContentLoaded", () => {
+  const imageContainer = document.getElementById("map-container");
+  const image = document.getElementById("clickable-image");
 
-// Mouse down event to start dragging
-draggable.addEventListener('mousedown', (e) => {
-    isDragging = true;
+  image.addEventListener("click", (event) => {
+    // Get the bounding rectangle of the image
+    const rect = image.getBoundingClientRect();
+    const x = event.clientX - rect.left; // X position within the image
+    const y = event.clientY - rect.top;  // Y position within the image
 
-    // Calculate the mouse position relative to the draggable element
-    offsetX = e.clientX - draggable.offsetLeft;
-    offsetY = e.clientY - draggable.offsetTop;
+    // Show a prompt to the user
+    const userInput = prompt("Enter your text:");
 
-    draggable.style.cursor = 'grabbing';
-});
+    // Exit if the user cancels or enters nothing
+    if (!userInput) return;
 
-// Mouse move event to drag the element
-document.addEventListener('mousemove', (e) => {
-    if (!isDragging) return;
+    // Create the button
+    const button = document.createElement("button");
+    button.classList.add("dot");
+    button.style.left = `${x}px`;
+    button.style.top = `${y}px`;
 
-    // Prevent text selection
-    e.preventDefault();
+    // Add an image inside the button (use your image link here)
+    const img = document.createElement("img");
+    img.src = "images/ghiblidog.gif"; // Replace with your button image link
+    img.alt = "Dot"; // Optional alt text for the image
+    img.style.width = "100%"; // Make the image fill the button
+    img.style.height = "100%";
+    img.style.borderRadius = "50%"; // Optional: Round image
+    button.appendChild(img);
 
-    // Update the position of the draggable element
-    const newX = e.clientX - offsetX;
-    const newY = e.clientY - offsetY;
+    // Save the user input as a tooltip or a hidden attribute
+    button.title = userInput; // Tooltip when hovering
+    button.setAttribute("data-text", userInput); // Save input for later use
 
-    draggable.style.left = `${newX}px`;
-    draggable.style.top = `${newY}px`;
-});
+    // Add an event listener to show the text when clicked
+    button.addEventListener("click", (e) => {
+      e.stopPropagation(); // Prevent triggering the image click event
+      alert(`Button Text: ${userInput}`);
+    });
 
-// Mouse up event to stop dragging
-document.addEventListener('mouseup', () => {
-    if (isDragging) {
-        isDragging = false;
-        draggable.style.cursor = 'grab';
-    }
+    // Append the button to the image container
+    imageContainer.appendChild(button);
+  });
 });
 

@@ -112,3 +112,25 @@ body {
     font-size: 14px;
 
 }
+
+#map-container {
+  position: relative;
+  display: inline-block;
+}
+
+img {
+  display: block; /* Removes spacing around the image */
+  max-width: 100%;
+}
+
+
+.dot {
+  position: absolute;
+  width: 30px; /* Adjust size for the button/image */
+  height: 30px;
+  background: none; /* Remove default button background */
+  border: none; /* Remove default border */
+  padding: 0; /* Remove padding */
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
