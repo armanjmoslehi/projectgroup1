@@ -1,0 +1,48 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: rgb(255, 236, 202);
+}
+
+/* Style for the modal */
+.box-location {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+    justify-content: center;
+    align-items: center;
+    display: flex;
+  }
+
+  .pop-up-box {
+    background-color: rgb(241, 241, 241);
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    text-align: center;
+    border-radius: 5px;
+  }
+  
+  /* Button Style */
+  button {
+    padding: 10px 20px;
+    background-color: rgb(255, 212, 132);
+    color: black;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px; 
+  }
+  
+  button:hover {
+    background-color: rgb(231, 192, 120);
+  }
+
+  #main-web{
+    text-align: center;
+  }
