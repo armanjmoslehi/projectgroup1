@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Add an image inside the button (use your image link here)
     const img = document.createElement("img");
-    img.src = "images/slugpin.jpeg"; // Replace with your button image link
+    img.src = "images/slugpinclear.JPG"; // Replace with your button image link
     img.alt = "Dot"; // Optional alt text for the image
     img.style.width = "100%"; // Make the image fill the button
     img.style.height = "100%";
