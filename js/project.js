@@ -33,20 +33,22 @@ document.addEventListener("DOMContentLoaded", () => {
     // Add an image inside the button
     const img = document.createElement("img");
     img.src = "images/slugpinclear.JPG"; // Replace with your button image link
-    img.alt = "Dot"; // Optional alt text for the image
-    img.style.width = "100%"; // Make the image fill the button
+    img.alt = "Dot";
+    img.style.width = "100%";
     img.style.height = "100%";
-    img.style.borderRadius = "50%"; // Optional: Round image
+    img.style.borderRadius = "50%";
     button.appendChild(img);
 
     // Save the user input as a tooltip or a hidden attribute
-    button.title = userInput; // Tooltip when hovering
-    button.setAttribute("data-text", userInput); // Save input for later use
+    button.title = userInput;
+    button.setAttribute("data-text", userInput);
+    button.setAttribute("data-x", x);
+    button.setAttribute("data-y", y);
 
-    // Add an event listener to show the text when clicked
+    // Add an event listener to show the custom modal
     button.addEventListener("click", (e) => {
-      e.stopPropagation(); // Prevent triggering the image click event
-      alert(`Button Text: ${userInput}`);
+      e.stopPropagation();
+      showModal(x, y, userInput, button);
     });
 
     // Append the button to the image container
@@ -60,6 +62,15 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("buttons", JSON.stringify(buttonsData));
   }
 
+  // Delete button data from localStorage
+  function deleteButtonData(x, y, text) {
+    const buttonsData = JSON.parse(localStorage.getItem("buttons")) || [];
+    const updatedButtonsData = buttonsData.filter(
+      (button) => !(button.x === x && button.y === y && button.text === text)
+    );
+    localStorage.setItem("buttons", JSON.stringify(updatedButtonsData));
+  }
+
   // Load buttons from localStorage
   function loadButtons() {
     const buttonsData = JSON.parse(localStorage.getItem("buttons")) || [];
@@ -68,20 +79,49 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Custom modal logic
+  function showModal(x, y, userInput, buttonElement) {
+    // Create modal container
+    const modal = document.createElement("div");
+    modal.classList.add("modal");
+
+    // Add modal content
+    const modalContent = document.createElement("div");
+    modalContent.classList.add("modal-content");
+    modalContent.innerHTML = `
+      <p>Button Text: ${userInput}</p>
+      <button id="ok-btn">OK</button>
+      <button id="delete-btn">Delete</button>
+    `;
+    modal.appendChild(modalContent);
+
+    // Append modal to body
+    document.body.appendChild(modal);
+
+    // Handle "OK" button click
+    document.getElementById("ok-btn").addEventListener("click", () => {
+      modal.remove(); // Close the modal
+    });
+
+    // Handle "Delete" button click
+    document.getElementById("delete-btn").addEventListener("click", () => {
+      // Remove button from DOM and localStorage
+      buttonElement.remove();
+      deleteButtonData(x, y, userInput);
+      modal.remove();
+    });
+  }
+
   // Add event listener to the image
   image.addEventListener("click", (event) => {
-    // Get the bounding rectangle of the image
     const rect = image.getBoundingClientRect();
-    const x = event.clientX - rect.left; // X position within the image
-    const y = event.clientY - rect.top;  // Y position within the image
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
 
-    // Show a prompt to the user
     const userInput = prompt("Enter your text:");
 
-    // Exit if the user cancels or enters nothing
     if (!userInput) return;
 
-    // Create the button and save it
     createButton(x, y, userInput);
     saveButtonData(x, y, userInput);
   });
@@ -89,3 +129,4 @@ document.addEventListener("DOMContentLoaded", () => {
   // Load buttons on page load
   loadButtons();
 });
+
