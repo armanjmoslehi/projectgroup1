@@ -134,4 +134,3 @@ document.addEventListener("DOMContentLoaded", () => {
     // Load buttons when the page loads
     loadButtons();
 });
-
