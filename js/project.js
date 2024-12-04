@@ -23,25 +23,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const imageContainer = document.getElementById("map-container");
   const image = document.getElementById("clickable-image");
 
-  image.addEventListener("click", (event) => {
-    // Get the bounding rectangle of the image
-    const rect = image.getBoundingClientRect();
-    const x = event.clientX - rect.left; // X position within the image
-    const y = event.clientY - rect.top;  // Y position within the image
-
-    // Show a prompt to the user
-    const userInput = prompt("Enter your text:");
-
-    // Exit if the user cancels or enters nothing
-    if (!userInput) return;
-
-    // Create the button
+  // Function to create and add a button
+  function createButton(x, y, userInput) {
     const button = document.createElement("button");
     button.classList.add("dot");
     button.style.left = `${x}px`;
     button.style.top = `${y}px`;
 
-    // Add an image inside the button (use your image link here)
+    // Add an image inside the button
     const img = document.createElement("img");
     img.src = "images/slugpinclear.JPG"; // Replace with your button image link
     img.alt = "Dot"; // Optional alt text for the image
@@ -62,6 +51,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Append the button to the image container
     imageContainer.appendChild(button);
-  });
-});
+  }
 
+  // Save button data to localStorage
+  function saveButtonData(x, y, text) {
+    const buttonsData = JSON.parse(localStorage.getItem("buttons")) || [];
+    buttonsData.push({ x, y, text });
+    localStorage.setItem("buttons", JSON.stringify(buttonsData));
+  }
+
+  // Load buttons from localStorage
+  function loadButtons() {
+    const buttonsData = JSON.parse(localStorage.getItem("buttons")) || [];
+    buttonsData.forEach(({ x, y, text }) => {
+      createButton(x, y, text);
+    });
+  }
+
+  // Add event listener to the image
+  image.addEventListener("click", (event) => {
+    // Get the bounding rectangle of the image
+    const rect = image.getBoundingClientRect();
+    const x = event.clientX - rect.left; // X position within the image
+    const y = event.clientY - rect.top;  // Y position within the image
+
+    // Show a prompt to the user
+    const userInput = prompt("Enter your text:");
+
+    // Exit if the user cancels or enters nothing
+    if (!userInput) return;
+
+    // Create the button and save it
+    createButton(x, y, userInput);
+    saveButtonData(x, y, userInput);
+  });
+
+  // Load buttons on page load
+  loadButtons();
+});
