@@ -63,6 +63,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Add an image inside the button (use your image link here)
     const img = document.createElement("img");
     img.src = "images/slugpinclear.JPG"; // Replace with your button image link
+<<<<<<< HEAD
     img.alt = "Dot";
     img.style.width = "100%";
     img.style.height = "100%";
@@ -76,11 +77,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Add an event listener to show the text when clicked
     button.addEventListener("click", (e) => {
       e.stopPropagation();
+=======
+    img.alt = "Dot"; // Optional alt text for the image
+    img.style.width = "100%"; // Make the image fill the button
+    img.style.height = "100%";
+    img.style.borderRadius = "50%"; // Optional: Round image
+    button.appendChild(img);
+
+    // Save the user input as a tooltip or a hidden attribute
+    button.title = userInput; // Tooltip when hovering
+    button.setAttribute("data-text", userInput); // Save input for later use
+
+    // Add an event listener to show the text when clicked
+    button.addEventListener("click", (e) => {
+      e.stopPropagation(); // Prevent triggering the image click event
+>>>>>>> parent of a94395c (Refresh)
       alert(`Button Text: ${userInput}`);
     });
 
     // Append the button to the image container
     imageContainer.appendChild(button);
+<<<<<<< HEAD
 <<<<<<< HEAD
   }
 
@@ -121,6 +138,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Load buttons on page load
   loadButtons();
+=======
+  });
+>>>>>>> parent of a94395c (Refresh)
 =======
   });
 >>>>>>> parent of a94395c (Refresh)
