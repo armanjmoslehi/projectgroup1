@@ -12,7 +12,18 @@
 <body>
     <div id="main-web">
         <h1>Welcome to the UC Santa Cruz Music Map!</h1>
-        
+
+        <!-- Button to trigger the overlay -->
+    <button id="learnMoreButton">Click here to learn how it works!</button>
+
+    <!-- The overlay (initially hidden) -->
+    <div id="overlay" class="overlay">
+        <div class="overlay-content">
+            <p>Click anywhere on the map to place a pin where you were listening to some music. The site will then prompt you to share what song you were listening to! Feel free to click on other's pins to see what they were listening to. Happy music mapping!</p>
+            <button id="closeButton">OK</button>
+        </div>
+    </div>
+
         <div id="map-container">
             <img id="clickable-image" src="images/map_final.jpg" alt="Clickable Image" width="500" />
         </div>

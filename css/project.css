@@ -3,11 +3,12 @@
   position: relative;  /* Positioning context for the pins */
   width: 100%;
   height: 100vh;  /* Use full viewport height */
-  overflow: hidden;  /* Hide anything outside the container */
   background-image: url('images/yourmapimage.jpg');  /* Your map image */
-  background-size: cover;  /* Resize image to cover the container */
+  background-size: contain;  /* Ensure the entire image is visible */
   background-position: center;  /* Center the image */
+  background-repeat: no-repeat;  /* Prevent tiling if the image is smaller than the container */
 }
+
 
 /* Ensure the clickable image is responsive */
 #clickable-image {
@@ -58,4 +59,50 @@
 h1 {
   text-align: center;
   font: arial;
+}
+
+/* styles.css */
+
+/* The overlay itself */
+.overlay {
+  display: none; /* Hide the overlay by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+  z-index: 1000; /* Ensure it sits above other content */
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+/* The content inside the overlay */
+.overlay-content {
+  background-color: #333;
+  padding: 20px;
+  border-radius: 8px;
+  width: 60%;
+  max-width: 500px;
+  text-align: center;
+}
+
+/* Button styling */
+button {
+  display: block; /* Make the button a block element so margin can center it */
+  margin: 0 auto; /* Centers the button horizontally */
+  padding: 10px 20px;
+  background-color: #355f36;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  margin-bottom: 20px; /* Adds space below the button */
+  transition: background-color 0.3s ease; /* Optional smooth transition for hover effect */
+  border-radius: 4px;
+}
+
+button:hover {
+  background-color: #45a049;
 }

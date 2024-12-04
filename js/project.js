@@ -159,6 +159,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+// script.js
+
+// Show the overlay when the button is clicked
+document.getElementById('learnMoreButton').addEventListener('click', function() {
+  document.getElementById('overlay').style.display = 'flex';
+});
+
+// Hide the overlay when the "OK" button is clicked
+document.getElementById('closeButton').addEventListener('click', function() {
+  document.getElementById('overlay').style.display = 'none';
+});
+
+
   // Load pins when the page loads
   loadPinsFromFirestore();
 });
