@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalContent = document.createElement("div");
     modalContent.classList.add("modal-content");
     modalContent.innerHTML = `
-      <p>Button Text: ${userInput}</p>
+      <p>I'm listening to: ${userInput}</p>
       <button id="ok-btn">OK</button>
       <button id="delete-btn">Delete</button>
     `;
@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
-    const userInput = prompt("Enter your text:");
+    const userInput = prompt("Enter your song:");
 
     if (!userInput) return;
 
