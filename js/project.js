@@ -1,9 +1,4 @@
-
-// Firebase initialization and Firestore setup (via modular SDK)
-import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, addDoc, getDocs, query, where, orderBy } from 'firebase/firestore';
-
-// Firebase config
+// Firebase initialization and Firestore setup (via CDN)
 const firebaseConfig = {
   apiKey: "AIzaSyBMiDKDPnkFWZGqrcgMRa4f6GxohGbvqyg",
   authDomain: "booyah2-f00fc.firebaseapp.com",
@@ -15,20 +10,17 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const app = firebase.initializeApp(firebaseConfig);
 
 // Initialize Firestore
-const db = getFirestore(app);
+const db = firebase.firestore(app);
 
 // Ensure the DOM is fully loaded before interacting with it
 document.addEventListener("DOMContentLoaded", () => {
     // Get the element with the ID 'myClick'
-    var clickBox = document.getElementById('myClick');
-    // Get the OK button
-    var okButton = document.getElementById('okBtn');
-    // Get the main content area
-    var mainContent = document.getElementById('mainContent');
-    // Get the image container and map image element
+    const clickBox = document.getElementById('myClick');
+    const okButton = document.getElementById('okBtn');
+    const mainContent = document.getElementById('main-web');
     const imageContainer = document.getElementById("map-container");
     const image = document.getElementById("clickable-image");
 
@@ -73,9 +65,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Save button data to Firestore
     function saveButtonData(x, y, text) {
-        const pinsCollection = collection(db, 'pins');  // Use 'collection' to get Firestore collection
+        const pinsCollection = db.collection('pins');
 
-        addDoc(pinsCollection, {
+        pinsCollection.add({
             x: x,
             y: y,
             text: text,
@@ -87,33 +79,13 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Delete button data from Firestore
-    function deleteButtonData(x, y, text) {
-        const pinsCollection = collection(db, 'pins');  // Use 'collection' to get Firestore collection
-
-        // Find and delete the pin in Firestore
-        const q = query(pinsCollection, where("x", "==", x), where("y", "==", y), where("text", "==", text));
-
-        getDocs(q).then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                doc.ref.delete(); // Delete the pin from Firestore
-            });
-        }).catch((error) => {
-            console.error("Error deleting pin: ", error);
-        });
-    }
-
     // Load buttons from Firestore
     function loadButtons() {
-        const pinsCollection = collection(db, 'pins');  // Use 'collection' to get Firestore collection
+        const pinsCollection = db.collection('pins');
+        const q = pinsCollection.orderBy("createdAt");
 
-        // Listen for real-time updates from Firestore
-        const q = query(pinsCollection, orderBy("createdAt"));
-        getDocs(q).then((querySnapshot) => {
-            // Clear existing buttons (if any) before re-rendering
-            imageContainer.innerHTML = '';
-
-            // Loop through the pins and create buttons
+        q.get().then((querySnapshot) => {
+            imageContainer.innerHTML = ''; // Clear existing pins
             querySnapshot.forEach((doc) => {
                 const pin = doc.data();
                 createButton(pin.x, pin.y, pin.text);
@@ -136,7 +108,6 @@ document.addEventListener("DOMContentLoaded", () => {
             <button id="delete-btn">Delete</button>
         `;
         modal.appendChild(modalContent);
-
         document.body.appendChild(modal);
 
         document.getElementById("ok-btn").addEventListener("click", () => {
@@ -144,21 +115,19 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         document.getElementById("delete-btn").addEventListener("click", () => {
-            // Remove button from DOM
-            buttonElement.remove();
-
-            // Delete the pin data from Firestore
+            buttonElement.remove(); // Remove the button from the map
             const pinText = buttonElement.getAttribute("data-text");
             const pinX = parseFloat(buttonElement.getAttribute("data-x"));
             const pinY = parseFloat(buttonElement.getAttribute("data-y"));
 
+            // Delete from Firestore
             deleteButtonData(pinX, pinY, pinText);
 
-            modal.remove();
+            modal.remove(); // Close modal
         });
     }
 
-    // Add event listener to the image
+    // Handle image clicks to add pins
     image.addEventListener("click", (event) => {
         const rect = image.getBoundingClientRect();
         const x = event.clientX - rect.left;
@@ -168,14 +137,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!userInput) return;
 
-        // Create the pin on the page
         createButton(x, y, userInput);
-
-        // Save the pin data to Firestore
         saveButtonData(x, y, userInput);
     });
 
-    // Load buttons from Firestore when the page loads
-    clickBox.style.display = 'flex'; // Show the box
-    loadButtons();  // Load pins from Firestore
+    // Load buttons when the page loads
+    loadButtons();
 });
