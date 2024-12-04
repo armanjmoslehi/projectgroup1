@@ -1,156 +1,56 @@
-body {
-    margin: 0;
-    padding: 0;
-    background-color: rgb(255, 236, 202);
-}
-
-/* Style for the modal */
-.box-location {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
-    justify-content: center;
-    align-items: center;
-    display: flex;
-  }
-
-  .pop-up-box {
-    background-color: rgb(241, 241, 241);
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 600px;
-    text-align: center;
-    border-radius: 5px;
-  }
-  
-  /* Button Style */
-  button {
-    padding: 10px 20px;
-    background-color: rgb(255, 212, 132);
-    color: black;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px; 
-  }
-  
-  button:hover {
-    background-color: rgb(231, 192, 120);
-  }
-
-  #main-web{
-    text-align: center;
-  }
-
-  body {
-
-    margin: 0;
-
-    font-family: Arial, sans-serif;
-
-}
-
- 
-
-.map-container {
-
-    position: relative;
-
-    width: 100%;
-
-    max-width: 800px; /* Adjust as per your map's size */
-
-    margin: auto;
-
-    border: 1px solid #ccc;
-
-}
-
- 
-
-.map-image {
-
-    display: block;
-
-    width: 100%;
-
-    height: auto;
-
-}
-
- 
-
-.draggable-text {
-
-    position: absolute;
-
-    top: 20%; /* Initial position */
-
-    left: 30%;
-
-    padding: 10px;
-
-    background-color: #007BFF;
-
-    color: white;
-
-    border: none;
-
-    border-radius: 5px;
-
-    cursor: grab;
-
-    z-index: 10;
-
-    user-select: none;
-
-    font-size: 14px;
-
-}
-
+/* Ensure the map container takes up the full screen */
 #map-container {
-  position: relative;
-  display: inline-block;
+  position: relative;  /* Positioning context for the pins */
+  width: 100%;
+  height: 100vh;  /* Use full viewport height */
+  overflow: hidden;  /* Hide anything outside the container */
+  background-image: url('images/yourmapimage.jpg');  /* Your map image */
+  background-size: cover;  /* Resize image to cover the container */
+  background-position: center;  /* Center the image */
 }
 
-img {
-  display: block; /* Removes spacing around the image */
-  max-width: 100%;
+/* Ensure the clickable image is responsive */
+#clickable-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;  /* Make sure the image covers the space */
+  display: block;  /* Remove any extra space under the image */
 }
 
-
+/* Style for the pins */
 .dot {
   position: absolute;
-  width: 30px; /* Adjust size for the button/image */
+  width: 30px;  /* Adjust the size of the pin */
   height: 30px;
-  background: none; /* Remove default button background */
-  border: none; /* Remove default border */
-  padding: 0; /* Remove padding */
-  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  background: transparent;
   cursor: pointer;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s;
 }
 
+.dot:hover {
+  transform: scale(1.2);  /* Add a small hover effect for better interaction */
+}
+
+/* Optional: If you want the modal to fill the screen */
 .modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
 }
 
 .modal-content {
-  background: white;
+  background-color: #fff;
   padding: 20px;
   border-radius: 8px;
-  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
