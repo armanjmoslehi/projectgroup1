@@ -1,56 +1,93 @@
-/* Ensure the map container takes up the full screen */
-#map-container {
-  position: relative;  /* Positioning context for the pins */
-  width: 100%;
-  height: 100vh;  /* Use full viewport height */
-  overflow: hidden;  /* Hide anything outside the container */
-  background-image: url('images/yourmapimage.jpg');  /* Your map image */
-  background-size: cover;  /* Resize image to cover the container */
-  background-position: center;  /* Center the image */
+/* Reset margins and padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* Ensure the clickable image is responsive */
+/* Ensure the body takes up the full height of the screen */
+body, html {
+  height: 100%;
+  font-family: Arial, sans-serif; /* Use a generic font family */
+}
+
+/* Ensure the map-container takes up the entire viewport */
+#map-container {
+  position: relative; /* Allow positioning of pins on top of the map */
+  width: 100%; /* Ensure the container takes full width */
+  height: 100vh; /* Make the container take up the full height of the viewport */
+  overflow: hidden; /* Prevent any content from overflowing the container */
+}
+
+/* Style the map image to fill the container */
 #clickable-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;  /* Make sure the image covers the space */
-  display: block;  /* Remove any extra space under the image */
+  object-fit: cover; /* Make sure the image covers the container area */
+  display: block; /* Ensure the image is displayed as a block element */
 }
 
-/* Style for the pins */
+/* Style for the pins (the clickable buttons) */
 .dot {
-  position: absolute;
-  width: 30px;  /* Adjust the size of the pin */
+  position: absolute; /* Absolute positioning relative to the map-container */
+  width: 30px; /* Adjust size of the pins */
   height: 30px;
-  border-radius: 50%;
+  background-color: transparent;
   border: none;
-  padding: 0;
-  background: transparent;
   cursor: pointer;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-  transition: transform 0.3s;
+  z-index: 10; /* Ensure the pins appear above the image */
+  transition: opacity 0.3s ease;
 }
 
+/* Optional: Add hover effect for the pins to make them slightly transparent when hovered */
 .dot:hover {
-  transform: scale(1.2);  /* Add a small hover effect for better interaction */
+  opacity: 0.7;
 }
 
-/* Optional: If you want the modal to fill the screen */
+/* The modal styling */
 .modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  z-index: 100; /* Ensure the modal is above everything else */
 }
 
 .modal-content {
-  background-color: #fff;
+  background-color: white;
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  max-width: 400px;
+  text-align: center;
 }
+
+/* Buttons inside the modal */
+.modal-content button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.modal-content button:hover {
+  background-color: #45a049;
+}
+
+#main-web {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Style the main heading (optional) */
+h1 {
+  font-size: 2rem;
+  color: #333;
+}
+
