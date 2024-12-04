@@ -10,10 +10,10 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
 // Initialize Firestore
-const db = firebase.firestore(app);
+const db = firebase.firestore();
 
 // Ensure the DOM is fully loaded before interacting with it
 document.addEventListener("DOMContentLoaded", () => {
