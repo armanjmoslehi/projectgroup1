@@ -1,4 +1,24 @@
 
+// Firebase initialization and Firestore setup (via modular SDK)
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, addDoc, getDocs, query, where, orderBy } from 'firebase/firestore';
+
+// Firebase config
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+// Initialize Firestore
+const db = getFirestore(app);
+
 // Get the element with the ID 'myClick'
 var clickBox = document.getElementById('myClick');
 
@@ -14,9 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const imageContainer = document.getElementById("map-container");
     const image = document.getElementById("clickable-image");
 
-    // Firebase initialization and Firestore setup (via window.firebaseDb)
-    const db = window.firebaseDb; // Access Firestore from the global scope
-    
     // Function to create and add a button to the map
     function createButton(x, y, userInput) {
         const button = document.createElement("button");
@@ -50,13 +67,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Save button data to Firestore
     function saveButtonData(x, y, text) {
-        const pinsCollection = db.collection('pins');
+        const pinsCollection = collection(db, 'pins');  // Use 'collection' to get Firestore collection
 
-        pinsCollection.add({
+        addDoc(pinsCollection, {
             x: x,
             y: y,
             text: text,
-            createdAt: window.firebaseApp.firestore.FieldValue.serverTimestamp() // Use firebaseApp to access FieldValue
+            createdAt: new Date() // Set the createdAt timestamp
         }).then(() => {
             console.log("Pin saved to Firestore.");
         }).catch((error) => {
@@ -66,25 +83,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Delete button data from Firestore
     function deleteButtonData(x, y, text) {
-        const pinsCollection = db.collection('pins');
+        const pinsCollection = collection(db, 'pins');  // Use 'collection' to get Firestore collection
 
         // Find and delete the pin in Firestore
-        pinsCollection.where("x", "==", x).where("y", "==", y).where("text", "==", text)
-            .get().then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                    doc.ref.delete(); // Delete the pin from Firestore
-                });
-            }).catch((error) => {
-                console.error("Error deleting pin: ", error);
+        const q = query(pinsCollection, where("x", "==", x), where("y", "==", y), where("text", "==", text));
+
+        getDocs(q).then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                doc.ref.delete(); // Delete the pin from Firestore
             });
+        }).catch((error) => {
+            console.error("Error deleting pin: ", error);
+        });
     }
 
     // Load buttons from Firestore
     function loadButtons() {
-        const pinsCollection = db.collection('pins');
+        const pinsCollection = collection(db, 'pins');  // Use 'collection' to get Firestore collection
 
         // Listen for real-time updates from Firestore
-        pinsCollection.orderBy("createdAt").onSnapshot((querySnapshot) => {
+        const q = query(pinsCollection, orderBy("createdAt"));
+        getDocs(q).then((querySnapshot) => {
             // Clear existing buttons (if any) before re-rendering
             imageContainer.innerHTML = '';
 
@@ -93,6 +112,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 const pin = doc.data();
                 createButton(pin.x, pin.y, pin.text);
             });
+        }).catch((error) => {
+            console.error("Error loading pins: ", error);
         });
     }
 
@@ -158,5 +179,6 @@ document.addEventListener("DOMContentLoaded", () => {
     okButton.onclick = function () {
         clickBox.style.display = 'none'; // Hide the box
         mainContent.style.display = 'block'; // Show the main content
-    };
-});
+      };
+  });
+  

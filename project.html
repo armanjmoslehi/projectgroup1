@@ -10,37 +10,12 @@
     <link rel="stylesheet" type="text/css" href="css/index.css">
     <link rel="stylesheet" type="text/css" href="css/project.css">
 
-    <!-- Include Firebase Modular SDK (for module-based usage) -->
-    <script type="module">
-        // Firebase Configuration (You can get this from your Firebase Console)
-        const firebaseConfig = {
-          apiKey: "AIzaSyBMiDKDPnkFWZGqrcgMRa4f6GxohGbvqyg",
-          authDomain: "booyah2-f00fc.firebaseapp.com",
-          projectId: "booyah2-f00fc",
-          storageBucket: "booyah2-f00fc.firebasestorage.app",
-          messagingSenderId: "278778285303",
-          appId: "1:278778285303:web:f57c7297a1097ee4d6d7f2",
-          measurementId: "G-2WKECGFX18"
-        };
-
-        // Import Firebase SDKs
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-        import { getFirestore } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
-
-        // Initialize Firebase and Firestore
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // Expose Firebase to the global scope for use in your custom JS
-        window.firebaseApp = app;
-        window.firebaseDb = db;
-    </script>
-
     <!-- jQuery (if needed) -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-    <!-- Your Custom JavaScript -->
-    <script src="js/project.js" defer></script>
+    <!-- Your Custom JavaScript (Firebase and app logic handled in project.js) -->
+    <script type="module" src="js/project.js" defer></script>
+
 </head>
 
 <body>
