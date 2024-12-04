@@ -1,40 +1,65 @@
 <!DOCTYPE html>
-<html lang="en"></html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UCSC Music Map!</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" type="text/css" href="css/site.css">
-  <link rel="stylesheet" type="text/css" href="css/index.css">
-  <link rel="stylesheet" type="text/css" href="css/project.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="css/project.css">
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+
+    <!-- Firebase Configuration -->
+    <script>
+        const firebaseConfig = {
+          apiKey: "AIzaSyBMiDKDPnkFWZGqrcgMRa4f6GxohGbvqyg",
+          authDomain: "booyah2-f00fc.firebaseapp.com",
+          projectId: "booyah2-f00fc",
+          storageBucket: "booyah2-f00fc.firebasestorage.app",
+          messagingSenderId: "278778285303",
+          appId: "1:278778285303:web:f57c7297a1097ee4d6d7f2",
+          measurementId: "G-2WKECGFX18"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore(app);
+    </script>
+
+    <!-- jQuery (if needed) -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- Your Custom JavaScript -->
     <script src="js/project.js" defer></script>
 </head>
 
 <body>
     <div id="myClick" class="box-location">
         <div class="pop-up-box">
-          <h1>Welcome to the UCSC Music Map!</h1>
-          <p>This is an interactive map of UCSC where you can pin songs you were listening to at specific spots on campus!</p>
-          <h3>How does our site work?</h3>
-          <p>As you explore the map, you will see pins placed in locations all around campus. Each pin represents a song that someone was listening to in that spot. You can add your own pin location and pick a song!</p>
-          <p>Click OK to proceed.</p>
-          <button id="okBtn">OK</button>
+            <h1>Welcome to the UCSC Music Map!</h1>
+            <p>This is an interactive map of UCSC where you can pin songs you were listening to at specific spots on campus!</p>
+            <h3>How does our site work?</h3>
+            <p>As you explore the map, you will see pins placed in locations all around campus. Each pin represents a song that someone was listening to in that spot. You can add your own pin location and pick a song!</p>
+            <p>Click OK to proceed.</p>
+            <button id="okBtn">OK</button>
         </div>
-      </div>
+    </div>
+
     <div id="main-web">
         <h1>Welcome to the UCSC Music Map!</h1>
     </div>
 
     <h1>UCSC Music Map</h1>
 
-    <div id="map-container"> 
+    <div id="map-container">
         <img id="clickable-image" src="images/map_final.jpg" alt="map">
     </div>
 
 </body>
 
-
-
-
+</html>
