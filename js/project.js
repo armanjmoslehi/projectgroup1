@@ -17,20 +17,10 @@ const db = firebase.firestore(app);
 
 // Ensure the DOM is fully loaded before interacting with it
 document.addEventListener("DOMContentLoaded", () => {
-    // Get the element with the ID 'myClick'
-    const clickBox = document.getElementById('myClick');
-    const okButton = document.getElementById('okBtn');
+    // Get the main content area
     const mainContent = document.getElementById('main-web');
     const imageContainer = document.getElementById("map-container");
     const image = document.getElementById("clickable-image");
-
-    // Ensure that clickBox and okButton exist
-    if (okButton) {
-        okButton.onclick = function () {
-            clickBox.style.display = 'none'; // Hide the box
-            mainContent.style.display = 'block'; // Show the main content
-        };
-    }
 
     // Function to create and add a button to the map
     function createButton(x, y, userInput) {
@@ -144,3 +134,4 @@ document.addEventListener("DOMContentLoaded", () => {
     // Load buttons when the page loads
     loadButtons();
 });
+
