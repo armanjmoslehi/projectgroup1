@@ -5,12 +5,13 @@ import { getFirestore, collection, addDoc, getDocs, query, where, orderBy } from
 
 // Firebase config
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyBMiDKDPnkFWZGqrcgMRa4f6GxohGbvqyg",
+  authDomain: "booyah2-f00fc.firebaseapp.com",
+  projectId: "booyah2-f00fc",
+  storageBucket: "booyah2-f00fc.firebasestorage.app",
+  messagingSenderId: "278778285303",
+  appId: "1:278778285303:web:f57c7297a1097ee4d6d7f2",
+  measurementId: "G-2WKECGFX18"
 };
 
 // Initialize Firebase
@@ -19,20 +20,25 @@ const app = initializeApp(firebaseConfig);
 // Initialize Firestore
 const db = getFirestore(app);
 
-// Get the element with the ID 'myClick'
-var clickBox = document.getElementById('myClick');
-
-// Get the OK button
-var okButton = document.getElementById('okBtn');
-
-// Get the main content area
-var mainContent = document.getElementById('mainContent');
-
 // Ensure the DOM is fully loaded before interacting with it
 document.addEventListener("DOMContentLoaded", () => {
-    // Get the container and map image element
+    // Get the element with the ID 'myClick'
+    var clickBox = document.getElementById('myClick');
+    // Get the OK button
+    var okButton = document.getElementById('okBtn');
+    // Get the main content area
+    var mainContent = document.getElementById('mainContent');
+    // Get the image container and map image element
     const imageContainer = document.getElementById("map-container");
     const image = document.getElementById("clickable-image");
+
+    // Ensure that clickBox and okButton exist
+    if (okButton) {
+        okButton.onclick = function () {
+            clickBox.style.display = 'none'; // Hide the box
+            mainContent.style.display = 'block'; // Show the main content
+        };
+    }
 
     // Function to create and add a button to the map
     function createButton(x, y, userInput) {
@@ -170,15 +176,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Load buttons from Firestore when the page loads
-    window.onload = function () {
-        clickBox.style.display = 'flex'; // Show the box
-        loadButtons();  // Load pins from Firestore
-    };
-
-    // Handle the 'OK' button functionality for the welcome box
-    okButton.onclick = function () {
-        clickBox.style.display = 'none'; // Hide the box
-        mainContent.style.display = 'block'; // Show the main content
-      };
-  });
-  
+    clickBox.style.display = 'flex'; // Show the box
+    loadButtons();  // Load pins from Firestore
+});
