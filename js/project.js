@@ -22,7 +22,32 @@ document.addEventListener("DOMContentLoaded", () => {
   const imageContainer = document.getElementById("map-container");
   const image = document.getElementById("clickable-image");
 
-  // Check if imageContainer is defined
+  // Overlay elements
+  const learnMoreButton = document.getElementById('learnMoreButton');
+  const overlay = document.getElementById('overlay');
+  const closeButton = document.getElementById('closeButton');
+
+  // Check if overlay elements exist
+  if (!learnMoreButton || !overlay || !closeButton) {
+    console.error('Overlay elements are missing!');
+    return;
+  }
+
+  // Debugging: Check if the button is clickable
+  console.log("Learn More button is loaded and clickable");
+
+  // Show the overlay when the "Learn More" button is clicked
+  learnMoreButton.addEventListener('click', () => {
+    console.log("Learn More button clicked!");
+    overlay.style.display = 'flex';  // Show overlay
+  });
+
+  // Hide the overlay when the close button is clicked
+  closeButton.addEventListener('click', () => {
+    overlay.style.display = 'none';  // Hide overlay
+  });
+
+  // Check if imageContainer and image are defined
   if (!imageContainer || !image) {
     console.error('Image container or image is not found!');
     return;
@@ -155,4 +180,3 @@ document.addEventListener("DOMContentLoaded", () => {
   // Load pins when the page loads
   loadPinsFromFirestore();
 });
-
