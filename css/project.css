@@ -9,7 +9,6 @@
   background-repeat: no-repeat;  /* Prevent tiling if the image is smaller than the container */
 }
 
-
 /* Ensure the clickable image is responsive */
 #clickable-image {
   width: 100%;
@@ -36,7 +35,7 @@
   transform: scale(1.2);  /* Add a small hover effect for better interaction */
 }
 
-/* Optional: If you want the modal to fill the screen */
+/* Ensure the modal is on top of everything else */
 .modal {
   position: fixed;
   top: 0;
@@ -47,13 +46,18 @@
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  z-index: 9999;  /* Ensure it is above all other content, including the map and pins */
 }
 
+/* Modal content styling */
 .modal-content {
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
+  width: 300px;  /* You can adjust this based on your preference */
+  text-align: center;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 10000;  /* Ensure content is above the modal background */
 }
 
 h1 {
@@ -73,7 +77,7 @@ h1 {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
-  z-index: 1000; /* Ensure it sits above other content */
+  z-index: 10000;  /* Ensure it sits above all other content */
   justify-content: center;
   align-items: center;
   color: white;

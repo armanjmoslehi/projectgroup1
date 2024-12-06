@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Custom modal logic for displaying pin info and options
+  // Custom modal logic for displaying pin info without delete option
   function showModal(x, y, userInput, buttonElement) {
     const modal = document.createElement("div");
     modal.classList.add("modal");
@@ -97,26 +97,14 @@ document.addEventListener("DOMContentLoaded", () => {
     modalContent.innerHTML = `
       <p>I'm listening to: ${userInput}</p>
       <button id="ok-btn">OK</button>
-      <button id="delete-btn">Delete</button>
     `;
     modal.appendChild(modalContent);
 
     document.body.appendChild(modal);
 
+    // OK button to close the modal
     document.getElementById("ok-btn").addEventListener("click", () => {
       modal.remove(); // Close the modal
-    });
-
-    document.getElementById("delete-btn").addEventListener("click", () => {
-      buttonElement.remove(); // Remove the button from the map
-      const pinText = buttonElement.getAttribute("data-text");
-      const pinX = parseFloat(buttonElement.getAttribute("data-x"));
-      const pinY = parseFloat(buttonElement.getAttribute("data-y"));
-
-      // Delete from Firestore
-      deleteButtonData(pinX, pinY, pinText);
-
-      modal.remove(); // Close modal
     });
   }
 
@@ -167,3 +155,4 @@ document.addEventListener("DOMContentLoaded", () => {
   // Load pins when the page loads
   loadPinsFromFirestore();
 });
+
