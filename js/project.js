@@ -1,4 +1,4 @@
-// Firebase Configuration and Initialization
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBMiDKDPnkFWZGqrcgMRa4f6GxohGbvqyg",
   authDomain: "booyah2-f00fc.firebaseapp.com",
@@ -9,32 +9,34 @@ const firebaseConfig = {
   measurementId: "G-2WKECGFX18"
 };
 
-// Initialize Firebase and Firestore
+// Initialize Firebase
 const app = firebase.initializeApp(firebaseConfig);
+
+// Initialize Firestore
 const db = firebase.firestore(app);
 
+// Ensure the DOM is fully loaded before interacting with it
 document.addEventListener("DOMContentLoaded", () => {
+  // Get the main content area and other elements
+  const mainContent = document.getElementById('main-web');
   const imageContainer = document.getElementById("map-container");
   const image = document.getElementById("clickable-image");
 
+  // Check if imageContainer is defined
+  if (!imageContainer) {
+    console.error('Image container is not found!');
+    return;
+  }
+
   // Function to create and add a button to the map
   function createButton(x, y, userInput) {
-    console.log(`Creating button at x: ${x}, y: ${y}, with text: ${userInput}`);
+    console.log(`Creating button at x: ${x}, y: ${y}, with text: ${userInput}`); // Debugging output
 
-    // Get the current size of the map container
-    const containerWidth = imageContainer.clientWidth;
-    const containerHeight = imageContainer.clientHeight;
-
-    // Calculate the percentage positions based on container size
-    const percentX = (x / containerWidth) * 100;
-    const percentY = (y / containerHeight) * 100;
-
-    // Create the pin button
     const button = document.createElement("button");
     button.classList.add("dot");
     button.style.position = "absolute";
-    button.style.left = `${percentX}%`;  // Set as percentage of container width
-    button.style.top = `${percentY}%`;   // Set as percentage of container height
+    button.style.left = `${x}px`;
+    button.style.top = `${y}px`;
 
     const img = document.createElement("img");
     img.src = "images/slugpinclear.JPG";  // Replace with your actual image URL
@@ -47,16 +49,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // Add tooltip text to the button (user input)
     button.title = userInput;
 
-    // Add event listener to show modal when clicked
+    // Add an event listener to show modal when clicked
     button.addEventListener("click", (e) => {
       e.stopPropagation();
-      showModal(userInput, button);  // pass button to showModal
+      showModal(x, y, userInput, button);
     });
-
-    // Store the pin data in the button attributes for easy retrieval
-    button.setAttribute("data-x", percentX);
-    button.setAttribute("data-y", percentY);
-    button.setAttribute("data-text", userInput);
 
     // Append the button to the image container
     imageContainer.appendChild(button);
@@ -73,60 +70,63 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // Clear existing pins from the map container to avoid duplicates
-      const existingPins = imageContainer.querySelectorAll(".dot");
-      existingPins.forEach(pin => pin.remove());
-
       querySnapshot.forEach((doc) => {
         const pin = doc.data();
         console.log("Pin data:", pin);  // Debugging output
 
-        // Get the current size of the map container
-        const containerWidth = imageContainer.clientWidth;
-        const containerHeight = imageContainer.clientHeight;
-
-        // Recalculate the pixel position based on the percentage values
-        const posX = (pin.x / 100) * containerWidth;
-        const posY = (pin.y / 100) * containerHeight;
-
         // Create button for each pin fetched from Firestore
-        createButtonAtPosition(posX, posY, pin.text);
+        createButton(pin.x, pin.y, pin.text);
       });
     }).catch((error) => {
       console.error("Error getting pins from Firestore: ", error);
     });
   }
 
-  // Function to create and position a button based on pixel position
-  function createButtonAtPosition(x, y, userInput) {
-    const button = document.createElement("button");
-    button.classList.add("dot");
-    button.style.position = "absolute";
-    button.style.left = `${x}px`; // Position using pixel values
-    button.style.top = `${y}px`;  // Position using pixel values
+  // Custom modal logic for displaying pin info and options
+  function showModal(x, y, userInput, buttonElement) {
+    const modal = document.createElement("div");
+    modal.classList.add("modal");
 
-    const img = document.createElement("img");
-    img.src = "images/slugpinclear.JPG";  // Replace with your actual image URL
-    img.alt = "Dot";
-    img.style.width = "100%";
-    img.style.height = "100%";
-    img.style.borderRadius = "50%";
-    button.appendChild(img);
+    const modalContent = document.createElement("div");
+    modalContent.classList.add("modal-content");
+    modalContent.innerHTML = `
+      <p>I'm listening to: ${userInput}</p>
+      <button id="ok-btn">OK</button>
+      <button id="delete-btn">Delete</button>
+    `;
+    modal.appendChild(modalContent);
 
-    // Add tooltip text to the button (user input)
-    button.title = userInput;
+    document.body.appendChild(modal);
 
-    // Add event listener to show modal when clicked
-    button.addEventListener("click", (e) => {
-      e.stopPropagation();
-      showModal(userInput, button);  // pass button to showModal
+    document.getElementById("ok-btn").addEventListener("click", () => {
+      modal.remove(); // Close the modal
     });
 
-    // Store the pin data in the button attributes for easy retrieval
-    button.setAttribute("data-text", userInput);
+    document.getElementById("delete-btn").addEventListener("click", () => {
+      buttonElement.remove(); // Remove the button from the map
+      const pinText = buttonElement.getAttribute("data-text");
+      const pinX = parseFloat(buttonElement.getAttribute("data-x"));
+      const pinY = parseFloat(buttonElement.getAttribute("data-y"));
 
-    // Append the button to the image container
-    imageContainer.appendChild(button);
+      // Delete from Firestore
+      deleteButtonData(pinX, pinY, pinText);
+
+      modal.remove(); // Close modal
+    });
+  }
+
+  // Delete button data from Firestore
+  function deleteButtonData(x, y, text) {
+    const pinsCollection = db.collection("pins");
+
+    const q = pinsCollection.where("x", "==", x).where("y", "==", y).where("text", "==", text);
+    q.get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        doc.ref.delete(); // Delete the pin from Firestore
+      });
+    }).catch((error) => {
+      console.error("Error deleting pin: ", error);
+    });
   }
 
   // Handle image clicks to add new pins
@@ -158,6 +158,19 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Error adding pin: ", error);
     });
   }
+
+// script.js
+
+// Show the overlay when the button is clicked
+document.getElementById('learnMoreButton').addEventListener('click', function() {
+  document.getElementById('overlay').style.display = 'flex';
+});
+
+// Hide the overlay when the "OK" button is clicked
+document.getElementById('closeButton').addEventListener('click', function() {
+  document.getElementById('overlay').style.display = 'none';
+});
+
 
   // Load pins when the page loads
   loadPinsFromFirestore();
