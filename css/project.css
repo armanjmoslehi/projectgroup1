@@ -3,7 +3,7 @@
   position: relative;  /* Positioning context for the pins */
   width: 100%;
   height: 100vh;  /* Use full viewport height */
-  background-image: url('images/yourmapimage.jpg');  /* Your map image */
+  background-image: url('/images/map_final.jpg');  /* Your map image */
   background-size: contain;  /* Ensure the entire image is visible */
   background-position: center;  /* Center the image */
   background-repeat: no-repeat;  /* Prevent tiling if the image is smaller than the container */
@@ -14,7 +14,7 @@
 #clickable-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;  /* Make sure the image covers the space */
+  object-fit: contain;  /* Make sure the image covers the space */
   display: block;  /* Remove any extra space under the image */
 }
 
@@ -58,7 +58,8 @@
 
 h1 {
   text-align: center;
-  font: arial;
+  font-family: Arial, sans-serif;
+  font-size: 60px;
 }
 
 /* styles.css */
