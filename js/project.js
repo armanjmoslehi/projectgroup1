@@ -23,20 +23,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const image = document.getElementById("clickable-image");
 
   // Check if imageContainer is defined
-  if (!imageContainer) {
-    console.error('Image container is not found!');
+  if (!imageContainer || !image) {
+    console.error('Image container or image is not found!');
     return;
   }
 
+  console.log("Image container and image loaded:", imageContainer, image);  // Debugging output
+
   // Function to create and add a button to the map
   function createButton(x, y, userInput) {
-    console.log(`Creating button at x: ${x}, y: ${y}, with text: ${userInput}`); // Debugging output
+    console.log(`Creating button at x: ${x}, y: ${y}, with text: ${userInput}`);  // Debugging output
 
     const button = document.createElement("button");
     button.classList.add("dot");
     button.style.position = "absolute";
     button.style.left = `${x}px`;
     button.style.top = `${y}px`;
+    button.style.zIndex = 9999; // Ensure button is on top
 
     const img = document.createElement("img");
     img.src = "images/slugpinclear.JPG";  // Replace with your actual image URL
@@ -57,6 +60,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Append the button to the image container
     imageContainer.appendChild(button);
+
+    console.log("Button created and appended:", button);  // Debugging output
   }
 
   // Load pins from Firestore and display them on the image
@@ -72,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       querySnapshot.forEach((doc) => {
         const pin = doc.data();
-        console.log("Pin data:", pin);  // Debugging output
+        console.log("Pin data from Firestore:", pin);  // Debugging output
 
         // Create button for each pin fetched from Firestore
         createButton(pin.x, pin.y, pin.text);
@@ -158,19 +163,6 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Error adding pin: ", error);
     });
   }
-
-// script.js
-
-// Show the overlay when the button is clicked
-document.getElementById('learnMoreButton').addEventListener('click', function() {
-  document.getElementById('overlay').style.display = 'flex';
-});
-
-// Hide the overlay when the "OK" button is clicked
-document.getElementById('closeButton').addEventListener('click', function() {
-  document.getElementById('overlay').style.display = 'none';
-});
-
 
   // Load pins when the page loads
   loadPinsFromFirestore();
