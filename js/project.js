@@ -22,21 +22,49 @@ document.addEventListener("DOMContentLoaded", () => {
   const imageContainer = document.getElementById("map-container");
   const image = document.getElementById("clickable-image");
 
-  // Check if imageContainer is defined
-  if (!imageContainer) {
-    console.error('Image container is not found!');
+  // Overlay elements
+  const learnMoreButton = document.getElementById('learnMoreButton');
+  const overlay = document.getElementById('overlay');
+  const closeButton = document.getElementById('closeButton');
+
+  // Check if overlay elements exist
+  if (!learnMoreButton || !overlay || !closeButton) {
+    console.error('Overlay elements are missing!');
     return;
   }
 
+  // Debugging: Check if the button is clickable
+  console.log("Learn More button is loaded and clickable");
+
+  // Show the overlay when the "Learn More" button is clicked
+  learnMoreButton.addEventListener('click', () => {
+    console.log("Learn More button clicked!");
+    overlay.style.display = 'flex';  // Show overlay
+  });
+
+  // Hide the overlay when the close button is clicked
+  closeButton.addEventListener('click', () => {
+    overlay.style.display = 'none';  // Hide overlay
+  });
+
+  // Check if imageContainer and image are defined
+  if (!imageContainer || !image) {
+    console.error('Image container or image is not found!');
+    return;
+  }
+
+  console.log("Image container and image loaded:", imageContainer, image);  // Debugging output
+
   // Function to create and add a button to the map
   function createButton(x, y, userInput) {
-    console.log(`Creating button at x: ${x}, y: ${y}, with text: ${userInput}`); // Debugging output
+    console.log(`Creating button at x: ${x}, y: ${y}, with text: ${userInput}`);  // Debugging output
 
     const button = document.createElement("button");
     button.classList.add("dot");
     button.style.position = "absolute";
     button.style.left = `${x}px`;
     button.style.top = `${y}px`;
+    button.style.zIndex = 9999; // Ensure button is on top
 
     const img = document.createElement("img");
     img.src = "images/slugpinclear.JPG";  // Replace with your actual image URL
@@ -57,6 +85,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Append the button to the image container
     imageContainer.appendChild(button);
+
+    console.log("Button created and appended:", button);  // Debugging output
   }
 
   // Load pins from Firestore and display them on the image
@@ -72,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       querySnapshot.forEach((doc) => {
         const pin = doc.data();
-        console.log("Pin data:", pin);  // Debugging output
+        console.log("Pin data from Firestore:", pin);  // Debugging output
 
         // Create button for each pin fetched from Firestore
         createButton(pin.x, pin.y, pin.text);
@@ -82,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Custom modal logic for displaying pin info and options
+  // Custom modal logic for displaying pin info without delete option
   function showModal(x, y, userInput, buttonElement) {
     const modal = document.createElement("div");
     modal.classList.add("modal");
@@ -92,26 +122,14 @@ document.addEventListener("DOMContentLoaded", () => {
     modalContent.innerHTML = `
       <p>I'm listening to: ${userInput}</p>
       <button id="ok-btn">OK</button>
-      <button id="delete-btn">Delete</button>
     `;
     modal.appendChild(modalContent);
 
     document.body.appendChild(modal);
 
+    // OK button to close the modal
     document.getElementById("ok-btn").addEventListener("click", () => {
       modal.remove(); // Close the modal
-    });
-
-    document.getElementById("delete-btn").addEventListener("click", () => {
-      buttonElement.remove(); // Remove the button from the map
-      const pinText = buttonElement.getAttribute("data-text");
-      const pinX = parseFloat(buttonElement.getAttribute("data-x"));
-      const pinY = parseFloat(buttonElement.getAttribute("data-y"));
-
-      // Delete from Firestore
-      deleteButtonData(pinX, pinY, pinText);
-
-      modal.remove(); // Close modal
     });
   }
 
@@ -158,19 +176,6 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Error adding pin: ", error);
     });
   }
-
-// script.js
-
-// Show the overlay when the button is clicked
-document.getElementById('learnMoreButton').addEventListener('click', function() {
-  document.getElementById('overlay').style.display = 'flex';
-});
-
-// Hide the overlay when the "OK" button is clicked
-document.getElementById('closeButton').addEventListener('click', function() {
-  document.getElementById('overlay').style.display = 'none';
-});
-
 
   // Load pins when the page loads
   loadPinsFromFirestore();

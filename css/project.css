@@ -1,20 +1,25 @@
+body {
+  background-color: #86db97; /* Light grey background, you can change this color */
+  margin: 0;  /* Removes the default margin */
+  font-family: Arial, sans-serif; /* Optionally set a font for the entire site */
+}
+
 /* Ensure the map container takes up the full screen */
 #map-container {
   position: relative;  /* Positioning context for the pins */
   width: 100%;
   height: 100vh;  /* Use full viewport height */
-  background-image: url('images/yourmapimage.jpg');  /* Your map image */
+  background-image: url('/images/map_final.jpg');  /* Your map image */
   background-size: contain;  /* Ensure the entire image is visible */
   background-position: center;  /* Center the image */
   background-repeat: no-repeat;  /* Prevent tiling if the image is smaller than the container */
 }
 
-
 /* Ensure the clickable image is responsive */
 #clickable-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;  /* Make sure the image covers the space */
+  object-fit: contain;  /* Make sure the image covers the space */
   display: block;  /* Remove any extra space under the image */
 }
 
@@ -36,7 +41,7 @@
   transform: scale(1.2);  /* Add a small hover effect for better interaction */
 }
 
-/* Optional: If you want the modal to fill the screen */
+/* Ensure the modal is on top of everything else */
 .modal {
   position: fixed;
   top: 0;
@@ -47,19 +52,30 @@
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  z-index: 9999;  /* Ensure it is above all other content, including the map and pins */
 }
 
+/* Modal content styling */
 .modal-content {
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
+  width: 300px;  /* You can adjust this based on your preference */
   text-align: center;
-  font: arial;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 10000;  /* Ensure content is above the modal background */
 }
+h1 {
+  border: #333;
+  background-color: rgba(255, 234, 114, 0.7); /* Semi-transparent background */
+  text-align: center;
+<<<<<<< HEAD
+  font-family: 'Bobby Jones Soft';
+  font-size: 60px;
+  -webkit-background-clip: text; /* Safari */
+  background-clip: text; /* For other browsers */
+  color: transparent; /* Make text color transparent to show the background clip */
+
 
 /* styles.css */
 
@@ -72,7 +88,7 @@ h1 {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
-  z-index: 1000; /* Ensure it sits above other content */
+  z-index: 10000;  /* Ensure it sits above all other content */
   justify-content: center;
   align-items: center;
   color: white;
