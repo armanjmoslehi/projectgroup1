@@ -1,3 +1,9 @@
+body {
+  background-color: #86db97; /* Light grey background, you can change this color */
+  margin: 0;  /* Removes the default margin */
+  font-family: Arial, sans-serif; /* Optionally set a font for the entire site */
+}
+
 /* Ensure the map container takes up the full screen */
 #map-container {
   position: relative;  /* Positioning context for the pins */
